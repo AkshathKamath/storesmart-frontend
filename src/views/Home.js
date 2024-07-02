@@ -11,7 +11,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/home");
+        const response = await axios.get("http://44.216.20.188:8000/home");
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -46,7 +46,7 @@ const HomePage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/analytics/form",
+        "http://http://44.216.20.188:8000/analytics/form",
         formData,
         {
           headers: {

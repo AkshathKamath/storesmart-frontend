@@ -24,14 +24,10 @@ const NavbarComponent = () => {
               <NavLink href="/home">Home</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/analytics/form" active>
-                Analytics
-              </NavLink>
+              <NavLink href="/analytics/form">Analytics</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/model" active>
-                ML
-              </NavLink>
+              <NavLink href="/model">ML</NavLink>
             </NavItem>
           </Nav>
         </NavbarCollapse>
