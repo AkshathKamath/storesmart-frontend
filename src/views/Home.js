@@ -1,8 +1,65 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 import NavbarComponent from "../components/Navbar";
 
 const HomePage = () => {
+  const [data, setData] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  //For the 'View Analytics' Button, get API request to node backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/home");
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  let Content;
+  if (data.msg > 0) {
+    Content = (
+      <div className="container mt-4">
+        <h6>Or view past data analytics:</h6>
+        <a href="/analytics/form" className="btn btn-primary">
+          View Analytics
+        </a>
+      </div>
+    );
+  } else {
+    Content = "";
+  }
+
+  //To handle form-upload, post api request to backend
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/analytics/form",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File uploaded successfully:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
   return (
     <div>
       <NavbarComponent />
@@ -19,28 +76,25 @@ const HomePage = () => {
         </figure>
       </div>
       <div className="container mt-4">
-        <form
-          action="/analytics/form"
-          method="post"
-          encType="multipart/form-data"
-          className="text-center"
-        >
-          <label className="form-label" htmlFor="file">
-            <h6>Upload your store's new dataset:</h6>
-          </label>
-          <input type="file" className="form-control" name="file" id="file" />
-          <br />
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <div className="mb-3">
+            <label htmlFor="file" className="form-label">
+              Upload your store's new dataset:
+            </label>
+            <input
+              type="file"
+              id="file"
+              name="file"
+              className="form-control"
+              onChange={handleFileChange}
+            />
+          </div>
+          <a type="submit" className="btn btn-primary" href="/analytics/form">
+            Upload
+          </a>
         </form>
       </div>
-      <div className="container mt-4">
-        <h6>Or view past data analytics:</h6>
-        <a href="/analytics/form" className="btn btn-primary">
-          View Analytics
-        </a>
-      </div>
+      {Content}
       <div className="container mt-5">
         <h6>Features and advantages</h6>
         <div className="list-group">
