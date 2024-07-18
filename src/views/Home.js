@@ -11,8 +11,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://44.216.20.188:8000/home");
-        // const response = await axios.get("http://localhost:8000/home");
+        // const response = await axios.get("http://44.216.20.188:8000/home");
+        const response = await axios.get("http://localhost:8000/home");
         // const response = await axios.get("api/home");
         setData(response.data);
       } catch (error) {
@@ -47,18 +47,8 @@ const HomePage = () => {
     formData.append("file", selectedFile);
 
     try {
-      const response = await axios.post(
-        "http://http://44.216.20.188:8000/analytics/form",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      //----------------------------------------------
       // const response = await axios.post(
-      //   "http://http://localhost:8000/analytics/form",
+      //   "http://http://44.216.20.188:8000/analytics/form",
       //   formData,
       //   {
       //     headers: {
@@ -66,6 +56,16 @@ const HomePage = () => {
       //     },
       //   }
       // );
+      //----------------------------------------------
+      const response = await axios.post(
+        "http://http://localhost:8000/analytics/form",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       // const response = await axios.post("api/analytics/form", formData, {
       //   headers: {
       //     "Content-Type": "multipart/form-data",
